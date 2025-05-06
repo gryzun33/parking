@@ -8,20 +8,21 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Response } from 'express';
+import { AuthDto } from './dto/auth.dto';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('register')
-  async register(@Body() body: RegisterUserDto) {
-    const { name, password } = body;
-    return await this.authService.register(name, password);
+  async register(@Body() body: AuthDto) {
+    const { email, password } = body;
+    return await this.authService.register(email, password);
   }
 
   @Post('login')
   @HttpCode(HttpStatus.OK)
-  async login(@Body() body: LoginUserDto, @Res() res: Response) {
+  async login(@Body() body: AuthDto, @Res() res: Response) {
     const { email, password } = body;
     const { accessToken } = await this.authService.login(email, password);
 
