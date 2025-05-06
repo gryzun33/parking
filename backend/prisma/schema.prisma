@@ -8,8 +8,15 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id        String       @id @default(uuid()) 
+  email     String       @unique             
+  password  String       
+}
+
 model ParkingSpot {
   id          String   @id @default(uuid())  
   spotNumber  String   @unique              
   location    String   
 }
+
