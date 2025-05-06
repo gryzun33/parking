@@ -1,0 +1,36 @@
+[
+  { "spotNumber": "A-01", "location": "ул. Центральная, 1" },
+  { "spotNumber": "A-02", "location": "ул. Центральная, 1" },
+  { "spotNumber": "A-03", "location": "ул. Центральная, 1" },
+  { "spotNumber": "A-04", "location": "ул. Центральная, 1" },
+  { "spotNumber": "A-05", "location": "ул. Центральная, 1" },
+  { "spotNumber": "A-06", "location": "ул. Центральная, 1" },
+
+  { "spotNumber": "B-01", "location": "ул. Налибокская, 3" },
+  { "spotNumber": "B-02", "location": "ул. Налибокская, 3" },
+  { "spotNumber": "B-03", "location": "ул. Налибокская, 3" },
+  { "spotNumber": "B-04", "location": "ул. Налибокская, 3" },
+  { "spotNumber": "B-05", "location": "ул. Налибокская, 3" },
+  { "spotNumber": "B-06", "location": "ул. Налибокская, 3" },
+
+  { "spotNumber": "C-01", "location": "ул. Куйбышева, 7" },
+  { "spotNumber": "C-02", "location": "ул. Куйбышева, 7" },
+  { "spotNumber": "C-03", "location": "ул. Куйбышева, 7" },
+  { "spotNumber": "C-04", "location": "ул. Куйбышева, 7" },
+  { "spotNumber": "C-05", "location": "ул. Куйбышева, 7" },
+  { "spotNumber": "C-06", "location": "ул. Куйбышева, 7" },
+
+  { "spotNumber": "D-01", "location": "пр. Победителей, 15" },
+  { "spotNumber": "D-02", "location": "пр. Победителей, 15" },
+  { "spotNumber": "D-03", "location": "пр. Победителей, 15" },
+  { "spotNumber": "D-04", "location": "пр. Победителей, 15" },
+  { "spotNumber": "D-05", "location": "пр. Победителей, 15" },
+  { "spotNumber": "D-06", "location": "пр. Победителей, 15" },
+
+  { "spotNumber": "E-01", "location": "ул. Богдановича, 20" },
+  { "spotNumber": "E-02", "location": "ул. Богдановича, 20" },
+  { "spotNumber": "E-03", "location": "ул. Богдановича, 20" },
+  { "spotNumber": "E-04", "location": "ул. Богдановича, 20" },
+  { "spotNumber": "E-05", "location": "ул. Богдановича, 20" },
+  { "spotNumber": "E-06", "location": "ул. Богдановича, 20" }
+]

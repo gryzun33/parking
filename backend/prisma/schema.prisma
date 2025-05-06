@@ -1,0 +1,15 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model ParkingSpot {
+  id          String   @id @default(uuid())  
+  spotNumber  String   @unique              
+  location    String   
+}
