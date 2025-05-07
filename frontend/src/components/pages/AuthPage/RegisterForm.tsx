@@ -1,12 +1,43 @@
 import type { AuthFormData } from '@/validators/authSchema';
 import AuthForm from './AuthForm';
+import { useNavigate } from 'react-router';
+import { useLoginMutation, useRegisterMutation } from '@/api/authApiSlice';
 
 const RegisterForm = () => {
-  const handleRegister = (data: AuthFormData) => {
-    console.log('Регистрация с данными:', data);
+  const navigate = useNavigate();
+
+  const [register, { isLoading: isRegisterLoading, error: registerError }] =
+    useRegisterMutation();
+  const [login, { isLoading: isLoginLoading, error: loginError }] =
+    useLoginMutation();
+
+  const handleRegister = async (data: AuthFormData) => {
+    const body = {
+      email: data.email,
+      password: data.password,
+    };
+    try {
+      await register(body).unwrap();
+      await login({ email: data.email, password: data.password }).unwrap();
+      // showSuccessToast('You have successfully registered!');
+      navigate('/');
+    } catch (err) {
+      console.error('Registration failed:', err);
+    }
   };
 
-  return <AuthForm onSubmit={handleRegister} submitLabel="Войти" />;
+  const error = registerError || loginError;
+
+  const isLoading = isRegisterLoading || isLoginLoading;
+
+  return (
+    <AuthForm
+      onSubmit={handleRegister}
+      submitLabel="Войти"
+      isLoading={isLoading}
+      error={error}
+    />
+  );
 };
 
 export default RegisterForm;
