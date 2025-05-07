@@ -31,7 +31,6 @@ export class AuthController {
       sameSite: 'strict',
       maxAge: 15 * 60 * 1000,
     });
-
     return res.send({ message: 'Logged in successfully' });
   }
 

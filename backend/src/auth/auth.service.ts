@@ -28,10 +28,12 @@ export class AuthService {
       });
     } catch (error) {
       if (error.code === 'P2002') {
-        throw new ConflictException('A user with this email already exists.');
+        throw new ConflictException(
+          'Пользователь с таким email уже существует',
+        );
       }
       throw new InternalServerErrorException(
-        `Error creating user: ${error.message}`,
+        `Ошибка при регистрации: ${error.message}`,
       );
     }
   }
@@ -47,12 +49,12 @@ export class AuthService {
     });
 
     if (!user) {
-      throw new ForbiddenException('Authentication failed');
+      throw new ForbiddenException('Пользователь с такой почтой не найден');
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      throw new ForbiddenException('Authentication failed');
+      throw new ForbiddenException('Неверный пароль');
     }
 
     const accessToken = await this.generateAccessToken(user.id);
