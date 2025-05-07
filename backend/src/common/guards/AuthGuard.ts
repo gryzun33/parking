@@ -20,14 +20,12 @@ export class AuthGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    console.log('AUTHGUARD');
     const request = context.switchToHttp().getRequest<Request>();
     const accessToken = request.cookies?.accessToken;
 
     if (!accessToken) {
       throw new UnauthorizedException('Access token is missing');
     }
-    console.log('token=', accessToken);
     try {
       const payload: JwtPayload = await this.jwtService.verifyAsync(
         accessToken,
@@ -37,7 +35,6 @@ export class AuthGuard implements CanActivate {
       );
       request['user'] = payload;
     } catch {
-      console.error('errorauthguard');
       throw new UnauthorizedException('Invalid token');
     }
 
