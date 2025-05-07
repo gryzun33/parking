@@ -1,3 +1,5 @@
+import LoginForm from '@/components/pages/AuthPage/LoginForm';
+import RegisterForm from '@/components/pages/AuthPage/RegisterForm';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useState } from 'react';
@@ -22,12 +24,10 @@ const AuthPage = () => {
             <TabsTrigger value="register">Регистрация</TabsTrigger>
           </TabsList>
           <TabsContent value="login" className="w-full">
-            ФОРМА ЛОГИНА
-            {/* <LoginForm /> */}
+            <LoginForm />
           </TabsContent>
           <TabsContent value="register">
-            ФОРМА РЕГИСТРАЦИИ
-            {/* <RegisterForm /> */}
+            <RegisterForm />
           </TabsContent>
         </Tabs>
       </CardContent>

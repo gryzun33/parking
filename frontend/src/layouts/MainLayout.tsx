@@ -1,4 +1,4 @@
-import Header from '@/components/shared/Header';
+import Header from '@/components/layouts/Header';
 import { Outlet } from 'react-router';
 
 const MainLayout = () => {
