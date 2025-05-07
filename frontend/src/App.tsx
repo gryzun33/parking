@@ -4,16 +4,46 @@ import MainLayout from './layouts/MainLayout';
 import Home from './pages/Home';
 import AuthPage from './pages/AuthPage';
 import Reservations from './pages/Reservations';
+import RedirectRoute from './components/shared/RedirectRoute';
+import ProtectedRoute from './components/shared/ProtectedRoute';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<MainLayout />}>
-          <Route index element={<Home />} />
-          <Route path="auth" element={<AuthPage />} />
-          <Route path="parking-spot" element={<ParkingSpot />} />
-          <Route path="reservations" element={<Reservations />} />
+          <Route
+            index
+            element={
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="auth"
+            element={
+              <RedirectRoute>
+                <AuthPage />
+              </RedirectRoute>
+            }
+          />
+          <Route
+            path="parking-spot"
+            element={
+              <ProtectedRoute>
+                <ParkingSpot />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="reservations"
+            element={
+              <ProtectedRoute>
+                <Reservations />
+              </ProtectedRoute>
+            }
+          />
         </Route>
       </Routes>
     </BrowserRouter>
