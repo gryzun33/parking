@@ -25,12 +25,12 @@ model ParkingSpot {
 model Reservation {
   id                  String    @id @default(uuid()) 
   userId              String    
-  parkingSpotNumber   String    
+  parkingSpotId       String    
   reservedDate        DateTime  
   reservedTime        String    
   status              String    
 
   user                User      @relation(fields: [userId], references: [id]) 
-  parkingSpot         ParkingSpot @relation(fields: [parkingSpotNumber], references: [id]) 
+  parkingSpot         ParkingSpot @relation(fields: [parkingSpotId], references: [id]) 
 }
 

@@ -2,6 +2,7 @@ import { Module, OnModuleInit } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { ParkingSpotsModule } from './parking-spots/parking-spots.module';
+import { ReservationsModule } from './reservations/reservations.module';
 
 @Module({
   imports: [
@@ -10,6 +11,7 @@ import { ParkingSpotsModule } from './parking-spots/parking-spots.module';
     }),
     AuthModule,
     ParkingSpotsModule,
+    ReservationsModule,
   ],
 })
 export class AppModule implements OnModuleInit {
