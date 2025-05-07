@@ -6,6 +6,7 @@ import AuthPage from './pages/AuthPage';
 import Reservations from './pages/Reservations';
 import RedirectRoute from './components/shared/RedirectRoute';
 import ProtectedRoute from './components/shared/ProtectedRoute';
+import PageNotFound from './pages/PageNotFound';
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route path="*" element={<PageNotFound />} />
         </Route>
       </Routes>
     </BrowserRouter>
