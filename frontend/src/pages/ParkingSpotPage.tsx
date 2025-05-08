@@ -12,12 +12,8 @@ import { NavLink, useParams } from 'react-router';
 const ParkingSpotPage = () => {
   const { slug } = useParams();
 
-  const now = new Date();
-  const month = now.getMonth();
-  const year = now.getFullYear();
-
   const { data, error, isLoading } = useGetParkingSpotMonthInfoQuery(
-    slug ? { slug, year, month } : skipToken
+    slug ?? skipToken
   );
 
   if (isLoading) return <Loader />;

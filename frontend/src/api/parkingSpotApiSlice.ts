@@ -3,7 +3,7 @@ import { baseQueryWithReauth } from './api';
 import type {
   MonthAvailabilityResponse,
   ParkingSpot,
-  ParkingSpotMonthParams,
+  SlotInfo,
 } from '@/types/parking-spot';
 
 export const parkingSpotApiSlice = createApi({
@@ -13,15 +13,23 @@ export const parkingSpotApiSlice = createApi({
     getParkingSpots: builder.query<ParkingSpot[], void>({
       query: () => '/parking-spots',
     }),
-    getParkingSpotMonthInfo: builder.query<
-      MonthAvailabilityResponse,
-      ParkingSpotMonthParams
+    getParkingSpotMonthInfo: builder.query<MonthAvailabilityResponse, string>({
+      query: (slug) => `/parking-spots/${slug}/available-times/month`,
+    }),
+
+    getParkingSpotDayInfo: builder.query<
+      SlotInfo[],
+      { slug: string; dateStr: string }
     >({
-      query: ({ slug, month, year }) =>
-        `/parking-spots/${slug}/available-times/month?year=${year}&month=${month}`,
+      query: ({ slug, dateStr }) => ({
+        url: `/parking-spots/${slug}/available-times/day?date=${dateStr}`,
+      }),
     }),
   }),
 });
 
-export const { useGetParkingSpotsQuery, useGetParkingSpotMonthInfoQuery } =
-  parkingSpotApiSlice;
+export const {
+  useGetParkingSpotsQuery,
+  useGetParkingSpotMonthInfoQuery,
+  useGetParkingSpotDayInfoQuery,
+} = parkingSpotApiSlice;
