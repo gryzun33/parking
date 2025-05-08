@@ -2,9 +2,12 @@ import { useGetParkingSpotMonthInfoQuery } from '@/api/parkingSpotApiSlice';
 import ParkingCalendar from '@/components/pages/ParkingSpotPage/ParkingCalendar';
 import { AlertDestructive } from '@/components/shared/AlertDestructive';
 import Loader from '@/components/shared/Loader';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 import { getErrorMessage } from '@/utils/getErrorMessage';
 import { skipToken } from '@reduxjs/toolkit/query/react';
-import { useParams } from 'react-router';
+import { ArrowLeft } from 'lucide-react';
+import { NavLink, useParams } from 'react-router';
 
 const ParkingSpotPage = () => {
   const { slug } = useParams();
@@ -38,7 +41,16 @@ const ParkingSpotPage = () => {
         parkingSpot.location
       }`}</p>
 
-      <ParkingCalendar dates={monthInfo} />
+      <Card className="mt-5 p-3">
+        <ParkingCalendar dates={monthInfo} />
+      </Card>
+      <Button asChild className="mt-3" variant="secondary">
+        <NavLink to="/">
+          {' '}
+          <ArrowLeft />
+          Назад
+        </NavLink>
+      </Button>
     </div>
   );
 };
