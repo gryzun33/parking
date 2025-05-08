@@ -5,6 +5,7 @@ import {
   AvailibiltyStatus,
   DateInfo,
   MonthAvailabilityResponse,
+  SlotInfo,
 } from './dto/month-availability.dto';
 import { slots } from 'src/utils/generateHourlySlots';
 
@@ -23,28 +24,25 @@ export class ParkingSpotsService {
   async getMonthAvailability(
     parkingSpotSlug: string,
     userId: string,
-    year: number,
-    month: number,
   ): Promise<MonthAvailabilityResponse> {
     const parkingSpot = await this.prisma.parkingSpot.findUnique({
       where: { slug: parkingSpotSlug },
     });
-
-    // console.log('parkingspot=', parkingSpot);
 
     if (!parkingSpot) {
       throw new NotFoundException('Parking spot not found');
     }
 
     const today = new Date();
+    const currentMonth = today.getMonth();
+    const currentYear = today.getFullYear();
 
-    const isCurrentMonth = month === today.getMonth();
+    const normalizeDate = (date: Date) => {
+      return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    };
 
-    // console.log('iscurrentmonth=', isCurrentMonth);
-
-    const firstDay = isCurrentMonth ? today : new Date(year, month, 1);
-    const lastDay = new Date(year, month + 1, 0);
-    const daysInMonth = lastDay.getDate();
+    const firstDay = normalizeDate(today);
+    const lastDay = normalizeDate(new Date(currentYear, currentMonth + 2, 0));
 
     const reservations = await this.prisma.reservation.findMany({
       where: {
@@ -59,19 +57,17 @@ export class ParkingSpotsService {
 
     const result: DateInfo[] = [];
 
-    const startDay = isCurrentMonth ? today.getDate() : 1;
-
-    // console.log('startDate=', startDay);
-
-    for (let day = startDay; day <= daysInMonth; day++) {
-      const currentDate = new Date(year, month, day);
-      // console.log('currentDate=', currentDate);
+    let currentDate = new Date(firstDay);
+    while (currentDate <= lastDay) {
       const dateStr = currentDate.toLocaleDateString('sv-SE', {
         timeZone: 'Europe/Minsk',
       });
-      // console.log('dateStr=', dateStr);
+
       const dayReservations = reservations.filter(
-        (r) => r.reservedDate.getDate() === day,
+        (r) =>
+          r.reservedDate.toLocaleDateString('sv-SE', {
+            timeZone: 'Europe/Minsk',
+          }) === dateStr,
       );
 
       const myReservation = dayReservations.some((r) => r.userId === userId);
@@ -87,8 +83,51 @@ export class ParkingSpotsService {
       }
 
       result.push({ date: dateStr, status });
+
+      currentDate.setDate(currentDate.getDate() + 1);
     }
 
+    console.log('result=', result);
+
     return { parkingSpot, monthInfo: result };
+  }
+
+  async getDaySlotStatus(
+    parkingSpotSlug: string,
+    date: string,
+    userId: string,
+  ): Promise<SlotInfo[]> {
+    const parkingSpot = await this.prisma.parkingSpot.findUnique({
+      where: { slug: parkingSpotSlug },
+    });
+
+    if (!parkingSpot) {
+      throw new NotFoundException('Parking spot not found');
+    }
+
+    const targetDate = new Date(date);
+
+    const dayReservations = await this.prisma.reservation.findMany({
+      where: {
+        parkingSpotId: parkingSpot.id,
+        reservedDate: targetDate,
+      },
+    });
+
+    const slotList: SlotInfo[] = slots.map((slot) => {
+      const reservation = dayReservations.find(
+        (r) => slot === r.reservedTime && r.status === 'booked',
+      );
+
+      return {
+        slotLabel: slot,
+        status: reservation ? 'booked' : 'available',
+        isMine: reservation?.userId === userId,
+      };
+    });
+
+    console.log('slotlist=', slotList);
+
+    return slotList;
   }
 }

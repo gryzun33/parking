@@ -11,3 +11,11 @@ export type MonthAvailabilityResponse = {
   monthInfo: DateInfo[];
   parkingSpot: ParkingSpot;
 };
+
+export type SlotInfo = {
+  slotLabel: string;
+  status: 'booked' | 'available';
+  isMine: boolean;
+};
+
+// export type SlotStatus = 'booked' | 'available';
