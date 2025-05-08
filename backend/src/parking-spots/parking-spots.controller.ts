@@ -23,13 +23,13 @@ export class ParkingSpotsController {
 
   @Get(':id/available-times/month')
   async getMonthAvailability(
-    @Param('id') parkingSpotId: string,
+    @Param('slug') parkingSpotSlug: string,
     @User('userId') userId: string,
     @Query('year', ParseIntPipe) year: number,
     @Query('month', ParseIntPipe) month: number,
   ): Promise<MonthAvailabilityResponse[]> {
     return this.parkingSpotsService.getMonthAvailability(
-      parkingSpotId,
+      parkingSpotSlug,
       userId,
       year,
       month,

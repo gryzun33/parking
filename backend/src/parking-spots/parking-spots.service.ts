@@ -14,19 +14,19 @@ export class ParkingSpotsService {
   async getAllSpots(): Promise<ParkingSpot[]> {
     return this.prisma.parkingSpot.findMany({
       orderBy: {
-        spotNumber: 'asc',
+        slug: 'asc',
       },
     });
   }
 
   async getMonthAvailability(
-    parkingSpotId: string,
+    parkingSpotSlug: string,
     userId: string,
     year: number,
     month: number,
   ): Promise<MonthAvailabilityResponse[]> {
     const parkingSpot = await this.prisma.parkingSpot.findUnique({
-      where: { id: parkingSpotId },
+      where: { slug: parkingSpotSlug },
     });
 
     if (!parkingSpot) {
@@ -43,7 +43,7 @@ export class ParkingSpotsService {
 
     const reservations = await this.prisma.reservation.findMany({
       where: {
-        parkingSpotId,
+        parkingSpotId: parkingSpot.id,
         reservedDate: {
           gte: firstDay,
           lte: lastDay,
