@@ -1,12 +1,12 @@
 import { BrowserRouter, Route, Routes } from 'react-router';
 import MainLayout from './layouts/MainLayout';
-import Home from './pages/Home';
 import AuthPage from './pages/AuthPage';
 import Reservations from './pages/Reservations';
 import RedirectRoute from './components/shared/RedirectRoute';
 import ProtectedRoute from './components/shared/ProtectedRoute';
 import PageNotFound from './pages/PageNotFound';
 import ParkingSpotPage from './pages/ParkingSpotPage';
+import ParkingSpotsPage from './pages/ParkingSpotsPage';
 
 function App() {
   return (
@@ -17,7 +17,7 @@ function App() {
             index
             element={
               <ProtectedRoute>
-                <Home />
+                <ParkingSpotsPage />
               </ProtectedRoute>
             }
           />

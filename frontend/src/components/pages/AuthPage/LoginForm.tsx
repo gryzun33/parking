@@ -9,8 +9,6 @@ const LoginForm = () => {
   const [login, { isLoading: isLoginLoading, error: loginError }] =
     useLoginMutation();
   const handleLogin = async (data: AuthFormData) => {
-    console.log('Вход с данными:', data);
-
     try {
       await login({ email: data.email, password: data.password }).unwrap();
       // showSuccessToast('You have successfully logged in!');

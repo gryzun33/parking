@@ -1,6 +1,6 @@
-import { ParkingSpotsTable } from '@/components/pages/Home/ParkingSpotsTable';
+import { ParkingSpotsTable } from '@/components/pages/ParkingSpotsPage/ParkingSpotsTable';
 
-const Home = () => {
+const ParkingSpotPage = () => {
   return (
     <div className="container mx-auto max-w-lg py-8">
       <h1 className="text-2xl text-center font-bold mb-6">
@@ -11,4 +11,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default ParkingSpotPage;

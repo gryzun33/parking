@@ -1,4 +1,5 @@
 import { useGetParkingSpotMonthInfoQuery } from '@/api/parkingSpotApiSlice';
+import ParkingCalendar from '@/components/pages/ParkingSpotPage/ParkingCalendar';
 import { AlertDestructive } from '@/components/shared/AlertDestructive';
 import Loader from '@/components/shared/Loader';
 import { getErrorMessage } from '@/utils/getErrorMessage';
@@ -12,29 +13,33 @@ const ParkingSpotPage = () => {
   const month = now.getMonth();
   const year = now.getFullYear();
 
-  const {
-    data: { parkingSpot, monthInfo } = {},
-    error,
-    isLoading,
-  } = useGetParkingSpotMonthInfoQuery(slug ? { slug, year, month } : skipToken);
+  const { data, error, isLoading } = useGetParkingSpotMonthInfoQuery(
+    slug ? { slug, year, month } : skipToken
+  );
 
   if (isLoading) return <Loader />;
 
   if (error) return <AlertDestructive message={getErrorMessage(error)} />;
 
+  if (!data || !data.parkingSpot || !data.monthInfo) {
+    return (
+      <div className="text-center py-8">Нет данных о парковочном месте</div>
+    );
+  }
+
+  const { parkingSpot, monthInfo } = data;
+
   return (
-    <>
-      <div>Парковочное место {slug}</div>
-      <div>{parkingSpot?.id}</div>
-      <div>{parkingSpot?.location}</div>
-      <div>{monthInfo?.length}</div>
-      {monthInfo?.map((day) => (
-        <div>
-          <div>{day.date}</div>
-          <div>{day.status}</div>
-        </div>
-      ))}
-    </>
+    <div className="container mx-auto max-w-lg py-8 flex flex-col items-center">
+      <h1 className="text-2xl text-center font-bold">
+        Бронирование парковочного места
+      </h1>
+      <p className="text-xl font-semibold">{`${parkingSpot.slug.toUpperCase()}, ${
+        parkingSpot.location
+      }`}</p>
+
+      <ParkingCalendar dates={monthInfo} />
+    </div>
   );
 };
 
