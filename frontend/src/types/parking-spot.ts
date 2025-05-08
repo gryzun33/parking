@@ -11,6 +11,11 @@ export type ParkingSpotMonthParams = {
 };
 
 export type MonthAvailabilityResponse = {
+  monthInfo: DateInfo[];
+  parkingSpot: ParkingSpot;
+};
+
+export type DateInfo = {
   date: string;
   status: AvailibiltyStatus;
 };
