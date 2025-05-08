@@ -2,8 +2,10 @@ import { ParkingSpotsTable } from '@/components/pages/Home/ParkingSpotsTable';
 
 const Home = () => {
   return (
-    <div className="container mx-auto py-8">
-      <h1 className="text-2xl font-bold mb-6">Список парковочных мест</h1>
+    <div className="container mx-auto max-w-lg py-8">
+      <h1 className="text-2xl text-center font-bold mb-6">
+        Список парковочных мест
+      </h1>
       <ParkingSpotsTable />
     </div>
   );

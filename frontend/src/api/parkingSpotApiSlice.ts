@@ -1,5 +1,5 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { baseQuery } from './api';
+import { baseQueryWithReauth } from './api';
 import type {
   MonthAvailabilityResponse,
   ParkingSpot,
@@ -8,7 +8,7 @@ import type {
 
 export const parkingSpotApiSlice = createApi({
   reducerPath: 'parkingSpotApi',
-  baseQuery: baseQuery,
+  baseQuery: baseQueryWithReauth,
   endpoints: (builder) => ({
     getParkingSpots: builder.query<ParkingSpot[], void>({
       query: () => '/parking-spots',

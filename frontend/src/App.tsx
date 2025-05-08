@@ -1,5 +1,4 @@
 import { BrowserRouter, Route, Routes } from 'react-router';
-import ParkingSpot from './pages/ParkingSpot';
 import MainLayout from './layouts/MainLayout';
 import Home from './pages/Home';
 import AuthPage from './pages/AuthPage';
@@ -7,6 +6,7 @@ import Reservations from './pages/Reservations';
 import RedirectRoute from './components/shared/RedirectRoute';
 import ProtectedRoute from './components/shared/ProtectedRoute';
 import PageNotFound from './pages/PageNotFound';
+import ParkingSpotPage from './pages/ParkingSpotPage';
 
 function App() {
   return (
@@ -30,10 +30,10 @@ function App() {
             }
           />
           <Route
-            path="parking-spot"
+            path="parking-spot/:slug"
             element={
               <ProtectedRoute>
-                <ParkingSpot />
+                <ParkingSpotPage />
               </ProtectedRoute>
             }
           />

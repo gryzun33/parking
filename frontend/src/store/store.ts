@@ -11,10 +11,12 @@ import {
   REHYDRATE,
 } from 'redux-persist';
 import { authApiSlice } from '@/api/authApiSlice';
+import { parkingSpotApiSlice } from '@/api/parkingSpotApiSlice';
 
 export const store = configureStore({
   reducer: {
     user: persistedUserReducer,
+    [parkingSpotApiSlice.reducerPath]: parkingSpotApiSlice.reducer,
     [authApiSlice.reducerPath]: authApiSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
@@ -22,7 +24,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(authApiSlice.middleware),
+    }).concat(authApiSlice.middleware, parkingSpotApiSlice.middleware),
 });
 
 export const persistor = persistStore(store);

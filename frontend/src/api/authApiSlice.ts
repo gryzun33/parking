@@ -2,7 +2,6 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 import { baseQuery } from './api';
 import { login, logout } from '../store/slices/userSlice';
 import type { AuthFormData } from '@/validators/authSchema';
-// import { profileApiSlice } from './profileApiSlice';
 
 export const authApiSlice = createApi({
   reducerPath: 'api',
