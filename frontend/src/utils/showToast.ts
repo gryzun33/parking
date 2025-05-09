@@ -9,3 +9,9 @@ export const showSuccessToast = (message: string) => {
     },
   });
 };
+
+export const showErrorToast = (message: string) => {
+  toast.error(message, {
+    duration: 3000,
+  });
+};

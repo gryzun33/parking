@@ -33,8 +33,29 @@ export const reservationApiSlice = createApi({
       query: () => '/reservations/me',
       providesTags: ['Reservation'],
     }),
+
+    cancelReservation: builder.mutation<void, { reservationId: string }>({
+      query: ({ reservationId }) => ({
+        url: `/reservations/${reservationId}`,
+        method: 'PATCH',
+        body: { status: 'cancelled' },
+      }),
+      invalidatesTags: ['Reservation'],
+      onQueryStarted: async (_, api) => {
+        const { dispatch, queryFulfilled } = api;
+        try {
+          await queryFulfilled;
+          dispatch(parkingSpotApiSlice.util.resetApiState());
+        } catch (error) {
+          console.error('Error during cancelling reservation:', error);
+        }
+      },
+    }),
   }),
 });
 
-export const { useCreateReservationMutation, useGetUserReservationsQuery } =
-  reservationApiSlice;
+export const {
+  useCreateReservationMutation,
+  useGetUserReservationsQuery,
+  useCancelReservationMutation,
+} = reservationApiSlice;

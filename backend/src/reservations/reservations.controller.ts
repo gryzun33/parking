@@ -1,9 +1,9 @@
 import {
   Body,
   Controller,
-  Delete,
   Get,
   Param,
+  Patch,
   Post,
   UseGuards,
 } from '@nestjs/common';
@@ -27,7 +27,7 @@ export class ReservationsController {
     return this.reservationsService.findByUser(userId);
   }
 
-  @Delete(':id')
+  @Patch(':id')
   cancelReservation(
     @Param('id') reservationId: string,
     @User('userId') userId: string,

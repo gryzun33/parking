@@ -9,7 +9,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { showSuccessToast } from '@/utils/showToast';
+import { showErrorToast, showSuccessToast } from '@/utils/showToast';
 import { useNavigate } from 'react-router';
 
 type Props = {
@@ -27,6 +27,7 @@ const LogoutModal = ({ children }: Props) => {
       navigate('/auth');
     } catch (error) {
       console.error('Ошибка при логауте:', error);
+      showErrorToast('Произошла ошибка при выходе из аккаунта');
     }
   };
 

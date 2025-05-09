@@ -25,33 +25,6 @@ export class ReservationsService {
 
     return createdReservations;
   }
-
-  // async findByUser(userId: string): Promise<UserReservationResponse[]> {
-  //   const reservations = await this.prisma.reservation.findMany({
-  //     where: { userId },
-  //     orderBy: { reservedDate: 'desc' },
-  //     include: {
-  //       parkingSpot: {
-  //         select: {
-  //           slug: true,
-  //           location: true,
-  //         },
-  //       },
-  //     },
-  //   });
-
-  //   const result = reservations.map((reservation) => ({
-  //     ...reservation,
-  //     reservedDate: reservation.reservedDate.toLocaleDateString('sv-SE', {
-  //       timeZone: 'Europe/Minsk',
-  //     }),
-  //     spotSlug: reservation.parkingSpot.slug,
-  //     location: reservation.parkingSpot.location,
-  //   }));
-
-  //   return result;
-  // }
-
   async findByUser(userId: string): Promise<UserReservationResponse[]> {
     const reservations = await this.prisma.reservation.findMany({
       where: { userId },

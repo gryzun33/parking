@@ -2,6 +2,7 @@ import { useGetUserReservationsQuery } from '@/api/reservationApiSlice';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { parseReservationDateTime } from '@/utils/getParseDateTime';
 import { Trash2 } from 'lucide-react';
+import CancelReservationModal from './CancelReservationModal';
 
 const ReservationsTable = () => {
   const { data: reservations } = useGetUserReservationsQuery();
@@ -50,7 +51,9 @@ const ReservationsTable = () => {
                   {res.status === 'booked' && !isPast && (
                     <>
                       <span className="text-green-600">Бронь</span>
-                      <Trash2 className="text-slate-600 w-5 h-5" />
+                      <CancelReservationModal id={res.id}>
+                        <Trash2 className="text-slate-600 w-5 h-5" />
+                      </CancelReservationModal>
                     </>
                   )}
                 </div>

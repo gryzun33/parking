@@ -20,7 +20,7 @@ const RegisterForm = () => {
     try {
       await register(body).unwrap();
       await login({ email: data.email, password: data.password }).unwrap();
-      showSuccessToast('Вы успешно зарегистрировались вошли в аккаунт!');
+      showSuccessToast('Вы успешно зарегистрировались и вошли в аккаунт!');
       navigate('/');
     } catch (err) {
       console.error('Registration failed:', err);
