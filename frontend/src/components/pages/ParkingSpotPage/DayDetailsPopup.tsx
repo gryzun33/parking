@@ -30,36 +30,37 @@ export const DayDetailsPopup = ({ children, date }: Props) => {
   });
 
   const { data, error, isLoading, refetch } = useGetParkingSpotDayInfoQuery(
-    slug ? { slug, dateStr } : skipToken
+    open && slug ? { slug, dateStr } : skipToken
   );
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="sm:max-w-md flex flex-col items-center p-2 sm:p-4">
-        <DialogTitle>
-          {' '}
-          {format(date, 'd MMMM yyyy, EEEE', { locale: ru })}
-        </DialogTitle>
+      {open && (
+        <DialogContent className="sm:max-w-md flex flex-col items-center p-2 sm:p-4">
+          <DialogTitle>
+            {format(date, 'd MMMM yyyy, EEEE', { locale: ru })}
+          </DialogTitle>
 
-        {isLoading && <Loader />}
+          {isLoading && <Loader />}
 
-        {error && <AlertDestructive message="Ошибка при загрузке слотов" />}
+          {error && <AlertDestructive message="Ошибка при загрузке слотов" />}
 
-        {data && (
-          <>
-            <DialogDescription className="text-base sm:text-lg text-slate-700">
-              Доступные слоты
-            </DialogDescription>
-            <SlotBookingForm
-              slots={data}
-              date={dateStr}
-              onClose={() => setOpen(false)}
-              refetch={refetch}
-            />
-          </>
-        )}
-      </DialogContent>
+          {data && (
+            <>
+              <DialogDescription className="text-base sm:text-lg text-slate-700">
+                Доступные слоты
+              </DialogDescription>
+              <SlotBookingForm
+                slots={data}
+                date={dateStr}
+                onClose={() => setOpen(false)}
+                refetch={refetch}
+              />
+            </>
+          )}
+        </DialogContent>
+      )}
     </Dialog>
   );
 };

@@ -8,6 +8,7 @@ import type {
 
 export const parkingSpotApiSlice = createApi({
   reducerPath: 'parkingSpotApi',
+  tagTypes: ['ParkingSpot'],
   baseQuery: baseQueryWithReauth,
   endpoints: (builder) => ({
     getParkingSpots: builder.query<ParkingSpot[], void>({

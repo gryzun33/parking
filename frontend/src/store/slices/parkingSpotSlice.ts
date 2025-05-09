@@ -13,7 +13,6 @@ const parkingSpotSlice = createSlice({
   initialState,
   reducers: {
     setSelectedSpotId(state, action: PayloadAction<string>) {
-      console.log('setspot');
       state.selectedSpotId = action.payload;
     },
     clearSelectedSpotId(state) {

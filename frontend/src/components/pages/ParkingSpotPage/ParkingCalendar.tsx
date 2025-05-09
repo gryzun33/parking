@@ -65,7 +65,7 @@ export const CustomDay = ({
       case 'unavailable':
         return 'bg-red-100 text-red-800';
       case 'booked-by-me':
-        return 'bg-green-100 text-blue-800 font-semibold';
+        return 'bg-green-100 text-green-800';
       case 'past':
         return 'text-gray-400';
       default:

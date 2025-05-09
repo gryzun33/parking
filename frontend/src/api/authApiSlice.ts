@@ -2,6 +2,8 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 import { baseQuery } from './api';
 import { login, logout } from '../store/slices/userSlice';
 import type { AuthFormData } from '@/validators/authSchema';
+import { parkingSpotApiSlice } from './parkingSpotApiSlice';
+import { reservationApiSlice } from './reservationApiSlice';
 
 export const authApiSlice = createApi({
   reducerPath: 'api',
@@ -26,6 +28,8 @@ export const authApiSlice = createApi({
         try {
           await queryFulfilled;
           dispatch(login());
+          dispatch(parkingSpotApiSlice.util.resetApiState());
+          dispatch(reservationApiSlice.util.resetApiState());
         } catch (error) {
           console.error('Login rtk failed:', error);
         }

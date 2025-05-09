@@ -18,7 +18,7 @@ export const ParkingSpotsTable = () => {
 
   return (
     <div className="w-full shadow-md rounded-md bg-slate-50 overflow-hidden">
-      <div className="grid grid-cols-2 font-semibold text-slate-100 bg-slate-700 border-b p-3">
+      <div className="grid grid-cols-[1fr_1.5fr] sm:grid-cols-2 font-semibold text-slate-100 bg-slate-700 border-b p-2 sm:p-3 text-sm sm:text-base items-center gap-2">
         <div>Парковочное место</div>
         <div>Адрес</div>
       </div>
@@ -29,7 +29,7 @@ export const ParkingSpotsTable = () => {
               <Link
                 to={`/parking-spot/${spot.slug.toLowerCase()}`}
                 onClick={() => dispatch(setSelectedSpotId(spot.id))}
-                className="grid grid-cols-2 p-3  hover:bg-slate-100  cursor-pointer"
+                className="grid grid-cols-[1fr_1.5fr] sm:grid-cols-2 p-2 sm:p-3  hover:bg-slate-100  cursor-pointer gap-2"
               >
                 <div className="font-medium">{spot.slug}</div>
                 <div className="text-sm">{spot.location}</div>
