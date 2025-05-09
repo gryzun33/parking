@@ -2,6 +2,7 @@ import type { AuthFormData } from '@/validators/authSchema';
 import AuthForm from './AuthForm';
 import { useNavigate } from 'react-router';
 import { useLoginMutation, useRegisterMutation } from '@/api/authApiSlice';
+import { showSuccessToast } from '@/utils/showToast';
 
 const RegisterForm = () => {
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ const RegisterForm = () => {
     try {
       await register(body).unwrap();
       await login({ email: data.email, password: data.password }).unwrap();
-      // showSuccessToast('You have successfully registered!');
+      showSuccessToast('Вы успешно зарегистрировались вошли в аккаунт!');
       navigate('/');
     } catch (err) {
       console.error('Registration failed:', err);

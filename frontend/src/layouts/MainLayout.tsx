@@ -1,5 +1,6 @@
 import Header from '@/components/layouts/Header';
 import { Outlet } from 'react-router';
+import { Toaster } from '@/components/ui/sonner';
 
 const MainLayout = () => {
   return (
@@ -8,7 +9,7 @@ const MainLayout = () => {
       <main className="flex-grow p-4 bg-slate-200 flex flex-col items-center">
         <Outlet />
       </main>
-      {/* <Toaster /> */}
+      <Toaster />
     </div>
   );
 };

@@ -2,6 +2,7 @@ import type { AuthFormData } from '@/validators/authSchema';
 import AuthForm from './AuthForm';
 import { useNavigate } from 'react-router';
 import { useLoginMutation } from '@/api/authApiSlice';
+import { showSuccessToast } from '@/utils/showToast';
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -11,7 +12,7 @@ const LoginForm = () => {
   const handleLogin = async (data: AuthFormData) => {
     try {
       await login({ email: data.email, password: data.password }).unwrap();
-      // showSuccessToast('You have successfully logged in!');
+      showSuccessToast('Вы успешно вошли в аккаунт!');
       navigate('/');
     } catch (err) {
       console.error('Login failed:', err);

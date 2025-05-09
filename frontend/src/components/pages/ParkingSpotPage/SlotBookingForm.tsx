@@ -6,6 +6,9 @@ import type { RootState } from '@/store/store';
 import { useSelector } from 'react-redux';
 import { useCreateReservationMutation } from '@/api/reservationApiSlice';
 import clsx from 'clsx';
+import { showSuccessToast } from '@/utils/showToast';
+import Loader from '@/components/shared/Loader';
+import { AlertDestructive } from '@/components/shared/AlertDestructive';
 
 type FormData = {
   selectedSlots: string[];
@@ -15,10 +18,9 @@ type Props = {
   slots: SlotInfo[];
   date: string;
   onClose: () => void;
-  refetch: () => void | Promise<any>;
 };
 
-const SlotBookingForm = ({ slots, date, onClose, refetch }: Props) => {
+const SlotBookingForm = ({ slots, date, onClose }: Props) => {
   const selectedSpotId = useSelector(
     (state: RootState) => state.parkingSpot.selectedSpotId
   );
@@ -26,7 +28,7 @@ const SlotBookingForm = ({ slots, date, onClose, refetch }: Props) => {
     defaultValues: { selectedSlots: [] },
   });
 
-  const [createReservation /* { isLoading, isSuccess, error } */] =
+  const [createReservation, { isLoading, error }] =
     useCreateReservationMutation();
 
   const selectedSlots = watch('selectedSlots');
@@ -40,9 +42,6 @@ const SlotBookingForm = ({ slots, date, onClose, refetch }: Props) => {
   };
 
   const handleFormSubmit = async (data: FormData) => {
-    // console.log('выбранные слоты:', data);
-    // console.log('idspot=', selectedSpotId);
-
     try {
       const body = {
         parkingSpotId: selectedSpotId,
@@ -50,14 +49,19 @@ const SlotBookingForm = ({ slots, date, onClose, refetch }: Props) => {
         reservedTimes: data.selectedSlots,
       };
       await createReservation(body).unwrap();
-      await refetch();
+      showSuccessToast('Вы успешно забронировали место!');
       onClose();
     } catch (error) {
       console.error(error);
     }
   };
 
-  // console.log('slots=', slots);
+  if (isLoading) return <Loader />;
+
+  if (error)
+    return (
+      <AlertDestructive message="Произошла ошибка во время бронирования" />
+    );
 
   return (
     <form

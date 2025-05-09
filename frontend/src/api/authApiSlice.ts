@@ -28,8 +28,6 @@ export const authApiSlice = createApi({
         try {
           await queryFulfilled;
           dispatch(login());
-          dispatch(parkingSpotApiSlice.util.resetApiState());
-          dispatch(reservationApiSlice.util.resetApiState());
         } catch (error) {
           console.error('Login rtk failed:', error);
         }
@@ -47,6 +45,8 @@ export const authApiSlice = createApi({
         try {
           await queryFulfilled;
           dispatch(logout());
+          dispatch(parkingSpotApiSlice.util.resetApiState());
+          dispatch(reservationApiSlice.util.resetApiState());
         } catch (err) {
           console.error('Logout failed:', err);
         }

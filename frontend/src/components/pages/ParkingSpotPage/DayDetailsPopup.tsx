@@ -29,7 +29,7 @@ export const DayDetailsPopup = ({ children, date }: Props) => {
     timeZone: 'Europe/Minsk',
   });
 
-  const { data, error, isLoading, refetch } = useGetParkingSpotDayInfoQuery(
+  const { data, error, isLoading } = useGetParkingSpotDayInfoQuery(
     open && slug ? { slug, dateStr } : skipToken
   );
 
@@ -55,7 +55,6 @@ export const DayDetailsPopup = ({ children, date }: Props) => {
                 slots={data}
                 date={dateStr}
                 onClose={() => setOpen(false)}
-                refetch={refetch}
               />
             </>
           )}

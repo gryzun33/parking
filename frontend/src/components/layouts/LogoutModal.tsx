@@ -9,6 +9,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
+import { showSuccessToast } from '@/utils/showToast';
 import { useNavigate } from 'react-router';
 
 type Props = {
@@ -22,6 +23,7 @@ const LogoutModal = ({ children }: Props) => {
   const handleLogout = async () => {
     try {
       await logoutApi().unwrap();
+      showSuccessToast('Вы вышли из аккаунта!');
       navigate('/auth');
     } catch (error) {
       console.error('Ошибка при логауте:', error);
