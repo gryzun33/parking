@@ -13,6 +13,7 @@ import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
 import { useParams } from 'react-router';
 import SlotBookingForm from './SlotBookingForm';
+import { useState } from 'react';
 
 type Props = {
   children: React.ReactNode;
@@ -20,18 +21,20 @@ type Props = {
 };
 
 export const DayDetailsPopup = ({ children, date }: Props) => {
+  const [open, setOpen] = useState(false);
+
   const { slug } = useParams();
 
   const dateStr = date.toLocaleDateString('sv-SE', {
     timeZone: 'Europe/Minsk',
   });
 
-  const { data, error, isLoading } = useGetParkingSpotDayInfoQuery(
+  const { data, error, isLoading, refetch } = useGetParkingSpotDayInfoQuery(
     slug ? { slug, dateStr } : skipToken
   );
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-md flex flex-col items-center p-2 sm:p-4">
         <DialogTitle>
@@ -48,7 +51,12 @@ export const DayDetailsPopup = ({ children, date }: Props) => {
             <DialogDescription className="text-base sm:text-lg text-slate-700">
               Доступные слоты
             </DialogDescription>
-            <SlotBookingForm slots={data} date={dateStr} />
+            <SlotBookingForm
+              slots={data}
+              date={dateStr}
+              onClose={() => setOpen(false)}
+              refetch={refetch}
+            />
           </>
         )}
       </DialogContent>

@@ -2,6 +2,10 @@ import { useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { Check } from 'lucide-react';
 import type { SlotInfo } from '@/types/parking-spot';
+import type { RootState } from '@/store/store';
+import { useSelector } from 'react-redux';
+import { useCreateReservationMutation } from '@/api/reservationApiSlice';
+import clsx from 'clsx';
 
 type FormData = {
   selectedSlots: string[];
@@ -10,12 +14,20 @@ type FormData = {
 type Props = {
   slots: SlotInfo[];
   date: string;
+  onClose: () => void;
+  refetch: () => void | Promise<any>;
 };
 
-const SlotBookingForm = ({ slots, date }: Props) => {
+const SlotBookingForm = ({ slots, date, onClose, refetch }: Props) => {
+  const selectedSpotId = useSelector(
+    (state: RootState) => state.parkingSpot.selectedSpotId
+  );
   const { register, handleSubmit, setValue, watch } = useForm<FormData>({
     defaultValues: { selectedSlots: [] },
   });
+
+  const [createReservation /* { isLoading, isSuccess, error } */] =
+    useCreateReservationMutation();
 
   const selectedSlots = watch('selectedSlots');
 
@@ -27,11 +39,25 @@ const SlotBookingForm = ({ slots, date }: Props) => {
     setValue('selectedSlots', newSelected);
   };
 
-  const handleFormSubmit = (data: FormData) => {
-    console.log('выбранные слоты:', data);
+  const handleFormSubmit = async (data: FormData) => {
+    // console.log('выбранные слоты:', data);
+    // console.log('idspot=', selectedSpotId);
+
+    try {
+      const body = {
+        parkingSpotId: selectedSpotId,
+        reservedDate: date,
+        reservedTimes: data.selectedSlots,
+      };
+      await createReservation(body).unwrap();
+      await refetch();
+      onClose();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  console.log('slots=', slots);
+  // console.log('slots=', slots);
 
   return (
     <form
@@ -50,14 +76,24 @@ const SlotBookingForm = ({ slots, date }: Props) => {
               >
                 <div className="flex items-center">
                   <div className="w-8 h-8 sm:w-10 sm:h-10"></div>
-                  <span className="font-mono text-sm sm:text-base sm:ml-5">
+                  <span
+                    className={clsx(
+                      'font-mono text-sm sm:text-base sm:ml-5',
+                      slot.isMine ? 'text-green-600' : 'text-slate-500'
+                    )}
+                  >
                     {slot.slotLabel}
                   </span>
                 </div>
 
-                <span className="text-gray-500">
-                  {slot.isMine ? 'моя бронь' : 'занято'}
-                </span>
+                <div
+                  className={clsx(
+                    ' w-[100px] sm:w-[130px] text-center',
+                    slot.isMine ? 'text-slate-800' : 'text-slate-500'
+                  )}
+                >
+                  {slot.isMine ? 'Моя бронь' : 'Занято'}
+                </div>
               </li>
             );
           }

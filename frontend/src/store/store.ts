@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import persistedUserReducer from './slices/userSlice';
+import parkingSpotReducer from './slices/parkingSpotSlice';
 
 import {
   FLUSH,
@@ -12,11 +13,14 @@ import {
 } from 'redux-persist';
 import { authApiSlice } from '@/api/authApiSlice';
 import { parkingSpotApiSlice } from '@/api/parkingSpotApiSlice';
+import { reservationApiSlice } from '@/api/reservationApiSlice';
 
 export const store = configureStore({
   reducer: {
     user: persistedUserReducer,
+    parkingSpot: parkingSpotReducer,
     [parkingSpotApiSlice.reducerPath]: parkingSpotApiSlice.reducer,
+    [reservationApiSlice.reducerPath]: reservationApiSlice.reducer,
     [authApiSlice.reducerPath]: authApiSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
@@ -24,7 +28,11 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(authApiSlice.middleware, parkingSpotApiSlice.middleware),
+    }).concat(
+      authApiSlice.middleware,
+      parkingSpotApiSlice.middleware,
+      reservationApiSlice.middleware
+    ),
 });
 
 export const persistor = persistStore(store);

@@ -2,11 +2,14 @@ import { useGetParkingSpotsQuery } from '@/api/parkingSpotApiSlice';
 import { AlertDestructive } from '@/components/shared/AlertDestructive';
 import Loader from '@/components/shared/Loader';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { setSelectedSpotId } from '@/store/slices/parkingSpotSlice';
 import { getErrorMessage } from '@/utils/getErrorMessage';
+import { useDispatch } from 'react-redux';
 
 import { Link } from 'react-router';
 
 export const ParkingSpotsTable = () => {
+  const dispatch = useDispatch();
   const { data: spots, error, isLoading } = useGetParkingSpotsQuery();
 
   if (isLoading) return <Loader />;
@@ -25,6 +28,7 @@ export const ParkingSpotsTable = () => {
             <li key={spot.id}>
               <Link
                 to={`/parking-spot/${spot.slug.toLowerCase()}`}
+                onClick={() => dispatch(setSelectedSpotId(spot.id))}
                 className="grid grid-cols-2 p-3  hover:bg-slate-100  cursor-pointer"
               >
                 <div className="font-medium">{spot.slug}</div>
