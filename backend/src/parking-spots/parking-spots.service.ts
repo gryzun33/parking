@@ -25,8 +25,6 @@ export class ParkingSpotsService {
     parkingSpotSlug: string,
     userId: string,
   ): Promise<MonthAvailabilityResponse> {
-    console.log('userID - 1', userId);
-
     const parkingSpot = await this.prisma.parkingSpot.findUnique({
       where: { slug: parkingSpotSlug },
     });
@@ -89,8 +87,6 @@ export class ParkingSpotsService {
       currentDate.setDate(currentDate.getDate() + 1);
     }
 
-    console.log('parkingspotmonth=', result);
-
     return { parkingSpot, monthInfo: result };
   }
 
@@ -99,8 +95,6 @@ export class ParkingSpotsService {
     date: string,
     userId: string,
   ): Promise<SlotInfo[]> {
-    console.log('userID - 2', userId);
-
     const parkingSpot = await this.prisma.parkingSpot.findUnique({
       where: { slug: parkingSpotSlug },
     });
@@ -129,8 +123,6 @@ export class ParkingSpotsService {
         isMine: reservation?.userId === userId,
       };
     });
-
-    console.log('slotlist=', slotList);
 
     return slotList;
   }

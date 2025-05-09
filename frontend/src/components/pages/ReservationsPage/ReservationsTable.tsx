@@ -7,7 +7,6 @@ import CancelReservationModal from './CancelReservationModal';
 const ReservationsTable = () => {
   const { data: reservations } = useGetUserReservationsQuery();
 
-  console.log('reservations=', reservations);
   return (
     <div className="w-full shadow-md rounded-md bg-slate-50 overflow-hidden">
       <div className="flex font-semibold text-slate-100 bg-slate-700 border-b p-2 sm:p-3 text-sm sm:text-base items-center">
@@ -62,7 +61,6 @@ const ReservationsTable = () => {
           })}
         </ul>
       </ScrollArea>
-
       <div className="w-full h-4 border-t-1"></div>
     </div>
   );
