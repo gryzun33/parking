@@ -1,8 +1,9 @@
 import { Calendar } from '@/components/ui/calendar';
-import type { AvailibiltyStatus, DateInfo } from '@/types/parking-spot';
+import type { DateInfo, DayStatus } from '@/types/parking-spot';
 import clsx from 'clsx';
 import { DayDetailsPopup } from './DayDetailsPopup';
 import { ru } from 'date-fns/locale';
+import { getStatusStyle } from '@/utils/getStatusStyle';
 
 type Props = {
   dates: DateInfo[];
@@ -27,8 +28,7 @@ export const ParkingCalendar = ({ dates }: Props) => {
 
           const { displayMonth, ...dayProps } = props;
 
-          const isOutside =
-            props.date.getMonth() !== props.displayMonth.getMonth();
+          const isOutside = props.date.getMonth() !== displayMonth.getMonth();
 
           return (
             <CustomDay {...dayProps} status={status} isOutside={isOutside} />
@@ -40,8 +40,6 @@ export const ParkingCalendar = ({ dates }: Props) => {
 };
 
 export default ParkingCalendar;
-
-type DayStatus = AvailibiltyStatus | 'past';
 
 type CustomDayProps = {
   date: Date;
@@ -58,20 +56,6 @@ export const CustomDay = ({
   if (isOutside) {
     return <div className="w-9 h-9" aria-hidden="true" />;
   }
-  const getStatusStyle = (status: DayStatus) => {
-    switch (status) {
-      case 'available':
-        return 'bg-slate-100 text-green-800';
-      case 'unavailable':
-        return 'bg-red-100 text-red-800';
-      case 'booked-by-me':
-        return 'bg-green-100 text-green-800';
-      case 'past':
-        return 'text-gray-400';
-      default:
-        return '';
-    }
-  };
 
   const isDisabled = status === 'unavailable' || status === 'past';
 

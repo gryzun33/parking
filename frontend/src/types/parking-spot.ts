@@ -4,12 +4,6 @@ export type ParkingSpot = {
   location: string;
 };
 
-// export type ParkingSpotMonthParams = {
-//   slug: string;
-//   month: number;
-//   year: number;
-// };
-
 export type MonthAvailabilityResponse = {
   monthInfo: DateInfo[];
   parkingSpot: ParkingSpot;
@@ -21,6 +15,8 @@ export type DateInfo = {
 };
 
 export type AvailibiltyStatus = 'available' | 'unavailable' | 'booked-by-me';
+
+export type DayStatus = AvailibiltyStatus | 'past';
 
 export type SlotInfo = {
   slotLabel: string;

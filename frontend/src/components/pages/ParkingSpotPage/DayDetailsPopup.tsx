@@ -14,6 +14,7 @@ import { ru } from 'date-fns/locale';
 import { useParams } from 'react-router';
 import SlotBookingForm from './SlotBookingForm';
 import { useState } from 'react';
+import { DEFAULT_LOCALE, DEFAULT_TIME_ZONE } from '@/utils/constants/locale';
 
 type Props = {
   children: React.ReactNode;
@@ -25,8 +26,8 @@ export const DayDetailsPopup = ({ children, date }: Props) => {
 
   const { slug } = useParams();
 
-  const dateStr = date.toLocaleDateString('sv-SE', {
-    timeZone: 'Europe/Minsk',
+  const dateStr = date.toLocaleDateString(DEFAULT_LOCALE, {
+    timeZone: DEFAULT_TIME_ZONE,
   });
 
   const { data, error, isLoading } = useGetParkingSpotDayInfoQuery(
