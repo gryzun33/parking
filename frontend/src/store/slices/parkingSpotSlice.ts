@@ -1,4 +1,6 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import storage from 'redux-persist/lib/storage';
+import { persistReducer } from 'redux-persist';
 
 interface ParkingSpotState {
   selectedSpotId: string;
@@ -21,7 +23,18 @@ const parkingSpotSlice = createSlice({
   },
 });
 
+const persistConfig = {
+  key: 'parkingSpot',
+  storage,
+  whitelist: ['selectedSpotId'],
+};
+
 export const { setSelectedSpotId, clearSelectedSpotId } =
   parkingSpotSlice.actions;
 
-export default parkingSpotSlice.reducer;
+const persistedParkingSpotReducer = persistReducer(
+  persistConfig,
+  parkingSpotSlice.reducer
+);
+
+export default persistedParkingSpotReducer;
