@@ -4,6 +4,7 @@ import * as dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import { ValidationPipe } from '@nestjs/common';
 import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
+import { LoggingService } from './logging/logging.service';
 
 dotenv.config();
 
@@ -12,8 +13,9 @@ async function bootstrap() {
 
   app.use(cookieParser());
 
+  const loggingService = app.get(LoggingService);
   const httpAdapter = app.get(HttpAdapterHost);
-  app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
+  app.useGlobalFilters(new AllExceptionsFilter(httpAdapter, loggingService));
 
   app.enableCors({
     origin: [

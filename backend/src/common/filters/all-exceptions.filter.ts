@@ -6,14 +6,21 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { HttpAdapterHost } from '@nestjs/core';
+import { LoggingService } from 'src/logging/logging.service';
+import { Request, Response } from 'express';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
-  constructor(private readonly httpAdapterHost: HttpAdapterHost) {}
+  constructor(
+    private readonly httpAdapterHost: HttpAdapterHost,
+    private readonly loggingService: LoggingService,
+  ) {}
 
   catch(exception: unknown, host: ArgumentsHost): void {
     const { httpAdapter } = this.httpAdapterHost;
     const ctx = host.switchToHttp();
+    const request = ctx.getRequest<Request>();
+    const response = ctx.getResponse<Response>();
 
     const httpStatus =
       exception instanceof HttpException
@@ -24,6 +31,13 @@ export class AllExceptionsFilter implements ExceptionFilter {
       exception instanceof HttpException
         ? (exception.getResponse() as any).message
         : 'Ошибка на сервере';
+
+    const stack = exception instanceof Error ? exception.stack : '';
+
+    this.loggingService.error(
+      `Exception: ${message} on ${request.method} ${request.originalUrl}`,
+      stack,
+    );
 
     const responseBody = {
       statusCode: httpStatus,
