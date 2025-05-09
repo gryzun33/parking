@@ -5,7 +5,6 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { setSelectedSpotId } from '@/store/slices/parkingSpotSlice';
 import { getErrorMessage } from '@/utils/getErrorMessage';
 import { useDispatch } from 'react-redux';
-
 import { Link } from 'react-router';
 
 export const ParkingSpotsTable = () => {

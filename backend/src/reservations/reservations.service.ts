@@ -26,11 +26,75 @@ export class ReservationsService {
     return createdReservations;
   }
 
-  async findByUser(userId: string) {
-    return this.prisma.reservation.findMany({
+  // async findByUser(userId: string): Promise<UserReservationResponse[]> {
+  //   const reservations = await this.prisma.reservation.findMany({
+  //     where: { userId },
+  //     orderBy: { reservedDate: 'desc' },
+  //     include: {
+  //       parkingSpot: {
+  //         select: {
+  //           slug: true,
+  //           location: true,
+  //         },
+  //       },
+  //     },
+  //   });
+
+  //   const result = reservations.map((reservation) => ({
+  //     ...reservation,
+  //     reservedDate: reservation.reservedDate.toLocaleDateString('sv-SE', {
+  //       timeZone: 'Europe/Minsk',
+  //     }),
+  //     spotSlug: reservation.parkingSpot.slug,
+  //     location: reservation.parkingSpot.location,
+  //   }));
+
+  //   return result;
+  // }
+
+  async findByUser(userId: string): Promise<UserReservationResponse[]> {
+    const reservations = await this.prisma.reservation.findMany({
       where: { userId },
-      orderBy: { reservedDate: 'desc' },
+      include: {
+        parkingSpot: {
+          select: {
+            slug: true,
+            location: true,
+          },
+        },
+      },
     });
+
+    const parsed = reservations.map((reservation) => {
+      const startHour = parseInt(
+        reservation.reservedTime.split(' - ')[0].split('.')[0] || '0',
+        10,
+      );
+
+      return {
+        ...reservation,
+        reservedDateObj: reservation.reservedDate,
+        startHour,
+        spotSlug: reservation.parkingSpot.slug,
+        location: reservation.parkingSpot.location,
+      };
+    });
+
+    const sorted = parsed.sort((a, b) => {
+      const dateCompare =
+        b.reservedDateObj.getTime() - a.reservedDateObj.getTime();
+      if (dateCompare !== 0) return dateCompare;
+      return b.startHour - a.startHour;
+    });
+
+    const result = sorted.map(({ reservedDateObj, startHour, ...rest }) => ({
+      ...rest,
+      reservedDate: reservedDateObj.toLocaleDateString('sv-SE', {
+        timeZone: 'Europe/Minsk',
+      }),
+    }));
+
+    return result;
   }
 
   async cancel(reservationId: string, userId: string) {

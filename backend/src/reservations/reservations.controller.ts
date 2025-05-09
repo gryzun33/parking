@@ -22,7 +22,7 @@ export class ReservationsController {
     return this.reservationsService.create(dto, userId);
   }
 
-  @Get()
+  @Get('/me')
   findUserReservations(@User('userId') userId: string) {
     return this.reservationsService.findByUser(userId);
   }

@@ -1,6 +1,9 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { baseQueryWithReauth } from './api';
-import type { CreateReservationDto } from '@/types/reservations';
+import type {
+  CreateReservationDto,
+  UserReservationResponse,
+} from '@/types/reservations';
 import { parkingSpotApiSlice } from './parkingSpotApiSlice';
 
 export const reservationApiSlice = createApi({
@@ -14,6 +17,7 @@ export const reservationApiSlice = createApi({
         method: 'POST',
         body,
       }),
+      invalidatesTags: ['Reservation'],
       onQueryStarted: async (_, api) => {
         const { dispatch, queryFulfilled } = api;
         try {
@@ -24,7 +28,13 @@ export const reservationApiSlice = createApi({
         }
       },
     }),
+
+    getUserReservations: builder.query<UserReservationResponse[], void>({
+      query: () => '/reservations/me',
+      providesTags: ['Reservation'],
+    }),
   }),
 });
 
-export const { useCreateReservationMutation } = reservationApiSlice;
+export const { useCreateReservationMutation, useGetUserReservationsQuery } =
+  reservationApiSlice;

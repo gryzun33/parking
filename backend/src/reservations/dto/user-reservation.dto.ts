@@ -1,10 +1,4 @@
-export type CreateReservationDto = {
-  parkingSpotId: string;
-  reservedDate: string;
-  reservedTimes: string[];
-};
-
-export type UserReservationResponse = {
+type UserReservationResponse = {
   id: string;
   userId: string;
   parkingSpotId: string;

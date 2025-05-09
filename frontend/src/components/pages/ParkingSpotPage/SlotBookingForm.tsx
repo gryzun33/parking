@@ -9,6 +9,7 @@ import clsx from 'clsx';
 import { showSuccessToast } from '@/utils/showToast';
 import Loader from '@/components/shared/Loader';
 import { AlertDestructive } from '@/components/shared/AlertDestructive';
+import { parseReservationDateTime } from '@/utils/getParseDateTime';
 
 type FormData = {
   selectedSlots: string[];
@@ -70,6 +71,12 @@ const SlotBookingForm = ({ slots, date, onClose }: Props) => {
     >
       <ul className="w-full">
         {slots.map((slot) => {
+          const { isPast } = parseReservationDateTime(date, slot.slotLabel);
+
+          if (isPast) {
+            return null;
+          }
+
           const isSelected = selectedSlots.includes(slot.slotLabel);
 
           if (slot.status === 'booked') {
