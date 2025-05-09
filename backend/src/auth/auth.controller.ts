@@ -24,14 +24,17 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   async login(@Body() body: AuthDto, @Res() res: Response) {
     const { email, password } = body;
-    const { accessToken } = await this.authService.login(email, password);
+    const { accessToken, userWithoutPassword } = await this.authService.login(
+      email,
+      password,
+    );
 
     res.cookie('accessToken', accessToken, {
       httpOnly: true,
       sameSite: 'strict',
       maxAge: 15 * 60 * 1000,
     });
-    return res.send({ message: 'Logged in successfully' });
+    return res.send(userWithoutPassword);
   }
 
   @Post('logout')

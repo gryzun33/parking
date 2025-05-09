@@ -32,8 +32,6 @@ export class AllExceptionsFilter implements ExceptionFilter {
       message,
     };
 
-    console.log('error=', responseBody);
-
     httpAdapter.reply(ctx.getResponse(), responseBody, httpStatus);
   }
 }

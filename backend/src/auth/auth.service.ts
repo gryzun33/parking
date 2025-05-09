@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
+import { User } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import { PrismaService } from 'src/common/prisma/prisma.service';
 
@@ -41,7 +42,10 @@ export class AuthService {
   async login(
     email: string,
     password: string,
-  ): Promise<{ accessToken: string }> {
+  ): Promise<{
+    accessToken: string;
+    userWithoutPassword: Omit<User, 'password'>;
+  }> {
     const user = await this.prisma.user.findFirst({
       where: {
         email,
@@ -52,14 +56,16 @@ export class AuthService {
       throw new ForbiddenException('Пользователь с такой почтой не найден');
     }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const { password: passwordInDb, ...userWithoutPassword } = user;
+
+    const isPasswordValid = await bcrypt.compare(password, passwordInDb);
     if (!isPasswordValid) {
       throw new ForbiddenException('Неверный пароль');
     }
 
     const accessToken = await this.generateAccessToken(user.id);
 
-    return { accessToken };
+    return { accessToken, userWithoutPassword };
   }
 
   async generateAccessToken(userId: string): Promise<string> {

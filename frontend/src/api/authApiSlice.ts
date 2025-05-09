@@ -4,6 +4,7 @@ import { login, logout } from '../store/slices/userSlice';
 import type { AuthFormData } from '@/validators/authSchema';
 import { parkingSpotApiSlice } from './parkingSpotApiSlice';
 import { reservationApiSlice } from './reservationApiSlice';
+import type { User } from '@/types/user';
 
 export const authApiSlice = createApi({
   reducerPath: 'api',
@@ -17,7 +18,7 @@ export const authApiSlice = createApi({
       }),
     }),
 
-    login: builder.mutation<void, AuthFormData>({
+    login: builder.mutation<User, AuthFormData>({
       query: (credentials) => ({
         url: '/auth/login',
         method: 'POST',
@@ -26,8 +27,8 @@ export const authApiSlice = createApi({
       onQueryStarted: async (_, api) => {
         const { dispatch, queryFulfilled } = api;
         try {
-          await queryFulfilled;
-          dispatch(login());
+          const { data } = await queryFulfilled;
+          dispatch(login(data));
         } catch (error) {
           console.error('Login rtk failed:', error);
         }
