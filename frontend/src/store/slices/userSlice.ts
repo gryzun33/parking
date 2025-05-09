@@ -34,7 +34,7 @@ const userSlice = createSlice({
 const persistConfig = {
   key: 'auth',
   storage,
-  whitelist: ['isLogin'],
+  whitelist: ['isLogin', 'user'],
 };
 
 const persistedUserReducer = persistReducer(persistConfig, userSlice.reducer);
