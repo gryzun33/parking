@@ -15,10 +15,7 @@ async function bootstrap() {
   const httpAdapter = app.get(HttpAdapterHost);
   app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
 
-  app.enableCors({
-    origin: 'http://localhost:5173',
-    credentials: true,
-  });
+  app.enableCors();
 
   app.useGlobalPipes(
     new ValidationPipe({
