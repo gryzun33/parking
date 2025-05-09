@@ -9,6 +9,6 @@ export class CreateReservationDto {
   @IsNotEmpty()
   reservedDate: string;
 
-  @IsNotEmpty()
-  reservedTime: string;
+  @IsNotEmpty({ each: true })
+  reservedTimes: string[];
 }

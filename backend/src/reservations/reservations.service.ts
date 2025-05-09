@@ -7,15 +7,23 @@ export class ReservationsService {
   constructor(private prisma: PrismaService) {}
 
   async create(dto: CreateReservationDto, userId: string) {
-    return this.prisma.reservation.create({
-      data: {
-        userId,
-        parkingSpotId: dto.parkingSpotId,
-        reservedDate: new Date(dto.reservedDate),
-        reservedTime: dto.reservedTime,
-        status: 'booked',
-      },
-    });
+    const { parkingSpotId, reservedDate, reservedTimes } = dto;
+
+    const createdReservations = await Promise.all(
+      reservedTimes.map((time) =>
+        this.prisma.reservation.create({
+          data: {
+            userId,
+            parkingSpotId,
+            reservedDate: new Date(reservedDate),
+            reservedTime: time,
+            status: 'booked',
+          },
+        }),
+      ),
+    );
+
+    return createdReservations;
   }
 
   async findByUser(userId: string) {
