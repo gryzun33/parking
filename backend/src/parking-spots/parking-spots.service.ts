@@ -2,12 +2,16 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { ParkingSpot } from '@prisma/client';
 import { PrismaService } from 'src/common/prisma/prisma.service';
 import {
-  AvailibiltyStatus,
-  DateInfo,
   MonthAvailabilityResponse,
   SlotInfo,
 } from './dto/month-availability.dto';
 import { slots } from 'src/utils/generateHourlySlots';
+import {
+  determineAvailabilityStatus,
+  formatDate,
+  getMonthDates,
+  normalizeDate,
+} from 'src/utils/parking-utils';
 
 @Injectable()
 export class ParkingSpotsService {
@@ -36,11 +40,6 @@ export class ParkingSpotsService {
     const today = new Date();
     const currentMonth = today.getMonth();
     const currentYear = today.getFullYear();
-
-    const normalizeDate = (date: Date) => {
-      return new Date(date.getFullYear(), date.getMonth(), date.getDate());
-    };
-
     const firstDay = normalizeDate(today);
     const lastDay = normalizeDate(new Date(currentYear, currentMonth + 2, 0));
 
@@ -55,37 +54,10 @@ export class ParkingSpotsService {
       },
     });
 
-    const result: DateInfo[] = [];
-
-    let currentDate = new Date(firstDay);
-    while (currentDate <= lastDay) {
-      const dateStr = currentDate.toLocaleDateString('sv-SE', {
-        timeZone: 'Europe/Minsk',
-      });
-
-      const dayReservations = reservations.filter(
-        (r) =>
-          r.reservedDate.toLocaleDateString('sv-SE', {
-            timeZone: 'Europe/Minsk',
-          }) === dateStr,
-      );
-
-      const myReservation = dayReservations.some((r) => r.userId === userId);
-
-      let status: AvailibiltyStatus;
-
-      if (myReservation) {
-        status = 'booked-by-me';
-      } else if (dayReservations.length === slots.length) {
-        status = 'unavailable';
-      } else {
-        status = 'available';
-      }
-
-      result.push({ date: dateStr, status });
-
-      currentDate.setDate(currentDate.getDate() + 1);
-    }
+    const result = getMonthDates(firstDay, lastDay).map((date) => {
+      const status = determineAvailabilityStatus(date, reservations, userId);
+      return { date: formatDate(date), status };
+    });
 
     return { parkingSpot, monthInfo: result };
   }

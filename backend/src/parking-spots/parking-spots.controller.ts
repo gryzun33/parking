@@ -1,11 +1,4 @@
-import {
-  Controller,
-  Get,
-  Param,
-  ParseIntPipe,
-  Query,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
 import { ParkingSpotsService } from './parking-spots.service';
 import { AuthGuard } from 'src/common/guards/AuthGuard';
 import { User } from 'src/common/decorators/user.decorator';

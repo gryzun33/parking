@@ -1,6 +1,8 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/common/prisma/prisma.service';
 import { CreateReservationDto } from './dto/create-reservation.dto';
+import { formatDate } from 'src/utils/parking-utils';
+import { UserReservationResponse } from './dto/user-reservation.dto';
 
 @Injectable()
 export class ReservationsService {
@@ -60,11 +62,15 @@ export class ReservationsService {
       return b.startHour - a.startHour;
     });
 
-    const result = sorted.map(({ reservedDateObj, startHour, ...rest }) => ({
-      ...rest,
-      reservedDate: reservedDateObj.toLocaleDateString('sv-SE', {
-        timeZone: 'Europe/Minsk',
-      }),
+    const result: UserReservationResponse[] = sorted.map((item) => ({
+      id: item.id,
+      userId: item.userId,
+      parkingSpotId: item.parkingSpotId,
+      reservedDate: formatDate(item.reservedDateObj),
+      reservedTime: item.reservedTime,
+      status: item.status,
+      spotSlug: item.spotSlug,
+      location: item.location,
     }));
 
     return result;

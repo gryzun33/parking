@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { HttpAdapterHost } from '@nestjs/core';
 import { LoggingService } from 'src/logging/logging.service';
-import { Request, Response } from 'express';
+import { Request } from 'express';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
@@ -20,7 +20,6 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const { httpAdapter } = this.httpAdapterHost;
     const ctx = host.switchToHttp();
     const request = ctx.getRequest<Request>();
-    const response = ctx.getResponse<Response>();
 
     const httpStatus =
       exception instanceof HttpException

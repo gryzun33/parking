@@ -1,4 +1,4 @@
-type UserReservationResponse = {
+export type UserReservationResponse = {
   id: string;
   userId: string;
   parkingSpotId: string;
