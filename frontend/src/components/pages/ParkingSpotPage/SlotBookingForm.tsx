@@ -64,6 +64,16 @@ const SlotBookingForm = ({ slots, date, onClose }: Props) => {
       <AlertDestructive message="Произошла ошибка во время бронирования" />
     );
 
+  const lastSlot = slots[slots.length - 1];
+  const isLastSlotPast = parseReservationDateTime(
+    date,
+    lastSlot.slotLabel
+  ).isPast;
+
+  if (isLastSlotPast) {
+    return <div className="pb-4">На сегодня свободных слотов уже нет </div>;
+  }
+
   return (
     <form
       onSubmit={handleSubmit(handleFormSubmit)}

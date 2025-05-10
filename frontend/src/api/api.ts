@@ -6,7 +6,7 @@ import {
 } from '@reduxjs/toolkit/query/react';
 
 export const baseQuery = fetchBaseQuery({
-  baseUrl: 'http://localhost:4000',
+  baseUrl: 'https://parking-production-fb7f.up.railway.app',
   credentials: 'include',
   prepareHeaders: (headers) => {
     headers.set('Content-Type', 'application/json');
