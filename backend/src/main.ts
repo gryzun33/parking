@@ -23,7 +23,7 @@ async function bootstrap() {
       'http://localhost:5174',
       'http://localhost:4173',
     ],
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
   });
 
