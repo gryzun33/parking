@@ -31,7 +31,8 @@ export class AuthController {
 
     res.cookie('accessToken', accessToken, {
       httpOnly: true,
-      sameSite: 'strict',
+      secure: true,
+      sameSite: 'none',
       maxAge: 15 * 60 * 1000,
     });
     return res.send(userWithoutPassword);
