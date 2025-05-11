@@ -10,6 +10,7 @@ import { showSuccessToast } from '@/utils/showToast';
 import Loader from '@/components/shared/Loader';
 import { AlertDestructive } from '@/components/shared/AlertDestructive';
 import { parseReservationDateTime } from '@/utils/getParseDateTime';
+import { getErrorMessage } from '@/utils/getErrorMessage';
 
 type FormData = {
   selectedSlots: string[];
@@ -59,10 +60,7 @@ const SlotBookingForm = ({ slots, date, onClose }: Props) => {
 
   if (isLoading) return <Loader />;
 
-  if (error)
-    return (
-      <AlertDestructive message="Произошла ошибка во время бронирования" />
-    );
+  if (error) return <AlertDestructive message={getErrorMessage(error)} />;
 
   const lastSlot = slots[slots.length - 1];
   const isLastSlotPast = parseReservationDateTime(

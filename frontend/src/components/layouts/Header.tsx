@@ -21,7 +21,11 @@ const Header = () => {
         {isLogin && (
           <nav className="flex gap-2 self-end items-center">
             <TextPopover message={user.email}>
-              <User className="text-slate-200" size={32} strokeWidth={1.5} />
+              <User
+                className="text-slate-200 cursor-pointer"
+                size={32}
+                strokeWidth={1.5}
+              />
             </TextPopover>
             <NavLink to="/reservations" className="md:hidden">
               <ClipboardList

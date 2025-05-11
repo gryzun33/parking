@@ -29,6 +29,9 @@ export const authApiSlice = createApi({
         try {
           const { data } = await queryFulfilled;
           dispatch(login(data));
+          dispatch(parkingSpotApiSlice.util.resetApiState());
+          dispatch(reservationApiSlice.util.resetApiState());
+          dispatch(authApiSlice.util.resetApiState());
         } catch (error) {
           console.error('Login rtk failed:', error);
         }
