@@ -2,6 +2,8 @@
 
 **Parking Online** is a web application for booking parking spots online.
 
+**Deploy:** https://parking-online.netlify.app/
+
 ---
 
 ## 📦 Tech Stack
