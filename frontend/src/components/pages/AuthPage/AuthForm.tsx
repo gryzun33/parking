@@ -50,6 +50,7 @@ const AuthForm = ({ onSubmit, submitLabel, isLoading, error }: Props) => {
           id="password"
           {...register('password')}
           className="w-full"
+          autoComplete="off"
         />
         {errors.password && (
           <p className="absolute top-[100%] text-red-500 text-xs font-light">
