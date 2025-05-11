@@ -37,7 +37,7 @@ In the first terminal go to folder with frontend-part:
 
 ```
 cd frontend
-npm install
+npm install --legacy-peer-deps
 ```
 
 In the second terminal go to folder with backend-part:
