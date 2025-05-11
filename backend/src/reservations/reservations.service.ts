@@ -26,7 +26,9 @@ export class ReservationsService {
       });
 
       if (existing.length > 0) {
-        throw new ConflictException('Один или несколько слотов уже заняты');
+        throw new ConflictException(
+          'Один или несколько слотов уже заняты, попробуйте перезагрузить страницу',
+        );
       }
 
       return tx.reservation.createMany({
