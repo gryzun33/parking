@@ -25,6 +25,7 @@ export const reservationApiSlice = createApi({
           dispatch(parkingSpotApiSlice.util.resetApiState());
         } catch (error) {
           console.error('Error during creating reservation:', error);
+          dispatch(parkingSpotApiSlice.util.resetApiState());
         }
       },
     }),
