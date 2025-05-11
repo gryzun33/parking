@@ -1,4 +1,8 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  ForbiddenException,
+  Injectable,
+} from '@nestjs/common';
 import { PrismaService } from 'src/common/prisma/prisma.service';
 import { CreateReservationDto } from './dto/create-reservation.dto';
 import { formatDate } from 'src/utils/parking-utils';
@@ -11,21 +15,34 @@ export class ReservationsService {
   async create(dto: CreateReservationDto, userId: string) {
     const { parkingSpotId, reservedDate, reservedTimes } = dto;
 
-    const createdReservations = await Promise.all(
-      reservedTimes.map((time) =>
-        this.prisma.reservation.create({
-          data: {
-            userId,
-            parkingSpotId,
-            reservedDate: new Date(reservedDate),
-            reservedTime: time,
-            status: 'booked',
-          },
-        }),
-      ),
-    );
+    const result = await this.prisma.$transaction(async (tx) => {
+      const existing = await tx.reservation.findMany({
+        where: {
+          parkingSpotId,
+          reservedDate: new Date(reservedDate),
+          reservedTime: { in: reservedTimes },
+          status: 'booked',
+        },
+      });
 
-    return createdReservations;
+      if (existing.length > 0) {
+        throw new ConflictException(
+          'Один или несколько слотов уже заняты, попробуйте перезагрузить страницу',
+        );
+      }
+
+      return tx.reservation.createMany({
+        data: reservedTimes.map((time) => ({
+          userId,
+          parkingSpotId,
+          reservedDate: new Date(reservedDate),
+          reservedTime: time,
+          status: 'booked',
+        })),
+      });
+    });
+
+    return result;
   }
   async findByUser(userId: string): Promise<UserReservationResponse[]> {
     const reservations = await this.prisma.reservation.findMany({
