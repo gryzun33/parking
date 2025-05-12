@@ -98,3 +98,7 @@ To run backend:
 npm run build
 npm run start:prod
 ```
+
+⚠️ **_Note:_**
+According to the provided technical task, only `/auth/login` and `/auth/register` endpoints were required, so refresh token logic was not implemented.
+However, I'm familiar with implementing JWT refresh token flows and can add it without any problems if needed.
